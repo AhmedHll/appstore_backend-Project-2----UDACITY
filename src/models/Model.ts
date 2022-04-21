@@ -1,9 +1,9 @@
-import bcrypt from 'bcrypt';
 import db from '../database';
 import User from '../types/user.type';
 
 class Model {
   constructor(public table: string) {}
+
   // create
   async create(user: User): Promise<User> {
     try {
@@ -41,12 +41,12 @@ class Model {
     }
   }
 
-  // get specific one
-  async getOne(id: string): Promise<User> {
+  // get one
+  async getOne(id: string, value: any): Promise<User> {
     try {
       const connection = await db.connect();
-      const sql = `SELECT * FROM ${this.table} WHERE id=($1)`;
-      const result = await connection.query(sql, [id]);
+      const sql = `SELECT * FROM ${this.table} WHERE ${id}=($1)`;
+      const result = await connection.query(sql, [value]);
       connection.release();
       return result.rows[0];
     } catch (error) {
@@ -100,13 +100,19 @@ class Model {
     }
   }
 
-  // authenticate user
-  // hash Password
-  async hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    return hashedPassword;
+  async addProduct(quantity: number, order_id: string, product_id: string): Promise<User> {
+    try {
+      const sql = `INSERT INTO ${this.table} (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *`;
+      const connection = await db.connect();
+      const result = await connection.query(sql, [quantity, order_id, product_id,]);
+      const order = result.rows[0];
+      connection.release();
+      return order;
+    } catch (err) {
+      throw new Error(
+        `Could not add product ${product_id} to order ${order_id}: ${err}`
+      );
+    }
   }
 }
-
 export default Model;
