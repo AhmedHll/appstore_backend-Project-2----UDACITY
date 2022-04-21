@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import Model from '../models/Model';
-
-const User = new Model('users');
+import userModel from '../models/userModel';
+const User = new userModel('users');
 
 // create user
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -36,7 +35,7 @@ const getUsers = async (req: Request, res: Response, next: NextFunction) => {
 // get specific user
 const getUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await User.getOne(req.params.id as unknown as string);
+    const user = await User.getOne('id', req.params.id);
     res.json({
       status: 'success',
       data: user,
@@ -75,4 +74,5 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
+
 export { createUser, getUser, getUsers, deleteUser, updateUser };

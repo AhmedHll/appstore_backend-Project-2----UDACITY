@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import app from '../server';
+import Model from '../models/Model';
 
 const request = supertest(app);
 

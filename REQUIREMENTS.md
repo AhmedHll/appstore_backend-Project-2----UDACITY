@@ -7,7 +7,7 @@ These are the notes from a meeting with the frontend developer that describe wha
 #### Products
 - Index ([GET]: `/products`)
 - Show ([GET]: `/products/:id`)
-- Create ([POST]: `/products/create`)[token required]
+- Create ([POST]: `/products`)[token required]
 - Update [token required] (PUT /api/products/:id)
 - Delete [token required] (DELETE /api/products/:id) 
 
@@ -67,40 +67,19 @@ CREATE TABLE IF NOT EXISTS users (
 - user_id
 - status of order (active or complete)
 
-<!-- ```sql
-CREATE TABLE IF NOT EXISTS orders (
-    id SERIAL PRIMARY KEY,
-    id_product SERIAL,
-    quantity NUMBER,
-    user_id integer,
-    status VARCHAR(15),
-);
-```-->
-
 ```sql
-CREATE TYPE order_status as ENUM ('ACTIVE', 'COMPLETE');
-
 CREATE TABLE IF NOT EXISTS orders (
     id SERIAL PRIMARY KEY,
-    user_id INT,
-    status order_status,
-    CONSTRAINT fk_user 
-        FOREIGN KEY(user_id)
-		    REFERENCES users(id)
-);
-
-CREATE TABLE IF NOT EXISTS order_products (
-	order_id SERIAL,
-	product_id SERIAL,
-	quantity INT,
-	PRIMARY KEY(product_id, order_id),
-
-	CONSTRAINT fk_product
-		FOREIGN KEY(product_id)
-			REFERENCES products(id),
-
-	CONSTRAINT fk_order
-		FOREIGN KEY(order_id)
-			REFERENCES orders(id)
-);
+    status VARCHAR(15),
+    user_id BIGINT REFERENCES users(id));
 ```
+
+### Product of each order
+```sql
+CREATE TABLE IF NOT EXISTS order_products(
+id SERIAL PRIMARY KEY,
+order_id BIGINT REFERENCES orders(id) NOT NULL,
+product_id BIGINT REFERENCES products(id) NOT NULL,
+quantity INT
+);
+``

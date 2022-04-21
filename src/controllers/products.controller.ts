@@ -1,14 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
 import Model from '../models/Model';
-
 const Product = new Model('products');
 
 // create Product
-const createProduct = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const createProduct: RequestHandler = async (req, res, next) => {
   try {
     const product = await Product.create(req.body);
     res.status(201).json({
@@ -16,13 +11,13 @@ const createProduct = async (
       data: { ...product },
       message: 'Product Created Successfully ✔',
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     next(error);
   }
 };
 
 // get all Products
-const getProducts = async (req: Request, res: Response, next: NextFunction) => {
+const getProducts: RequestHandler = async (req, res, next) => {
   try {
     const product = await Product.getAll();
     res.json({
@@ -38,7 +33,7 @@ const getProducts = async (req: Request, res: Response, next: NextFunction) => {
 // get specific Product
 const getProduct = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const product = await Product.getOne(req.params.id as unknown as string);
+    const product = await Product.getOne('id', req.params.id);
     res.json({
       status: 'success',
       data: product,

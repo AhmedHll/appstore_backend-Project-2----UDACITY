@@ -3,6 +3,7 @@ interface User {
   email: string;
   firstName: string;
   lastName: string;
-  hashPassword(password: unknown): string;
+  password: string;
+  // hashPassword(password: unknown): string;
 }
 export default User;
