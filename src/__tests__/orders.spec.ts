@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import Order from '../types/order.type';
 
 const order = new Model('orders');
-let createdOrder :Order;
+let createdOrder: Order;
 const request = supertest(app);
 
 const newOrder = {
@@ -51,7 +51,7 @@ describe('Testing orders Endpoints.', () => {
       .post('/api/orders')
       .send(newOrder)
       .set('Cookie', [`token=${token}`]);
-      createdOrder = response.body.data;
+    createdOrder = response.body.data;
     expect(response.status).toBe(201);
   });
 
@@ -106,7 +106,9 @@ describe('Testing orders Endpoints.', () => {
   });
 
   it('[DELETE] /api/orders/1 [token require] ', async () => {
-    const response = await request.patch(`/api/orders/${createdOrder.id}`).send(newOrder);
+    const response = await request
+      .patch(`/api/orders/${createdOrder.id}`)
+      .send(newOrder);
     expect(response.status).toBe(401);
   });
 });

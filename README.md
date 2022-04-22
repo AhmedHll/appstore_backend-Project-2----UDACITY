@@ -38,6 +38,10 @@ npm i pg --- PostgreSQL client
 npm i bcrypt --- Password hashing
 npm i dotenv --- Load environment variables
 npm i jsonwebtoken --- JSON web tokens
+npm i cookie-parser
+npm i cors
+npm i db-migrate
+npm i db-migrate-pg
 ```
 #### Dev Dependencies
 ```sh
@@ -52,6 +56,8 @@ npm i --save-dev jasmine-spec-reporter ---  Jasmine test output formatting
 npm i --save-dev nodemon --- Monitor files & auto restart node
 # Types for typescript support
 npm -i --save-dev @types/bcrypt
+npm -i --save-dev @types/cookie-parser
+npm -i --save-dev @types/cors
 npm -i --save-dev @types/express
 npm -i --save-dev @types/jsonwebtoken
 npm -i --save-dev @types/supertest
