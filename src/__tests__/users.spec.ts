@@ -1,12 +1,12 @@
 import Model from '../models/Model';
 import supertest from 'supertest';
 import app from '../server';
-import userModel from '../models/userModel';
 import jwt from 'jsonwebtoken';
-
-const user = new Model('user');
+import User from '../types/user.type';
+const user = new Model('users');
 
 const request = supertest(app);
+let createdUser: User;
 
 const newUser = {
   firstName: 'first',
@@ -51,12 +51,12 @@ describe('Testing Users Endpoints.', () => {
       password: 'test123',
     };
     const response = await request.post('/api/users').send(newUser);
-    expect(response.status).toBe(200);
+
+    createdUser = response.body.data as User;
+    expect(response.status).toBe(201);
   });
 
-  // it('[POST] /api/users/authentication`)
-
-  it('[PATCH] /api/users/1 To edit user account by id ', async () => {
+  it('[PATCH] /api/users/1 To edit user account by id with providing a token ', async () => {
     const response = await request
       .patch('/api/users/1')
       .send(newUser)
@@ -64,19 +64,21 @@ describe('Testing Users Endpoints.', () => {
     expect(response.status).toBe(200);
   });
 
-  it('[DELETE] /api/users/1 To edit user account by id ', async () => {
-    const response = await request
-      .patch('/api/users/1')
-      .send(newUser)
-      .set('Cookie', [`token=${token}`]);
-    expect(response.status).toBe(200);
+  it('[PATCH] /api/users/1 [token require] ', async () => {
+    const response = await request.patch('/api/users/1').send(newUser);
+    expect(response.status).toBe(401);
   });
 
-  it('[GET] /api/users/1 to get user by id', async () => {
+  it('[GET] /api/users/1 to get user by id with providing a token', async () => {
     const response = await request
       .get('/api/users/1')
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
+  });
+
+  it('[GET] /api/users/1 [token require]', async () => {
+    const response = await request.get('/api/users/1');
+    expect(response.status).toBe(401);
   });
 
   it('[GET] /api/users to get users with providing a token', async () => {
@@ -88,6 +90,21 @@ describe('Testing Users Endpoints.', () => {
 
   it('[GET] /api/users [token require]', async () => {
     const response = await request.get('/api/users');
+    expect(response.status).toBe(401);
+  });
+
+  it('[DELETE] /api/users/ To delete user account by id with providing a token', async () => {
+    const response = await request
+      .delete(`/api/users/${createdUser.id}`)
+      .send(newUser)
+      .set('Cookie', [`token=${token}`]);
+    expect(response.status).toBe(200);
+  });
+
+  it('[DELETE] /api/users/ [token require]', async () => {
+    const response = await request
+      .delete(`/api/users/${createdUser.id}`)
+      .send(newUser);
     expect(response.status).toBe(401);
   });
 });

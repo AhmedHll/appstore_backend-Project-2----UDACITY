@@ -5,7 +5,6 @@ NODE_ENV=dev
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=appstore_backend
-POSTGRES_DB_TEST=appstore_backend_test
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 
@@ -66,8 +65,8 @@ npm -i --save-dev @typescript-eslint/parser
 ## Scripts Used
 ```sh
     "nom run dev": "to start dev mode with nodemon on port 3600",
-    "nom run build": "to cmpair ts fils to js fils on dis root",
-    "nom run start": "to cmpair ts files and run dev mode",
+    "nom run build": "to compar ts fils to js fils on dis root",
+    "nom run start": "to compar ts files and run dev mode",
     "nom run format": "to use prettier to format the code",
     "nom run lint": "to use eslint to analyzes the code to quickly find problems",
     "nom run test": "to run test cases by jasmine",
@@ -84,11 +83,11 @@ In this repo there is a `REQUIREMENTS.md` document which outlines what this API 
 
 ```sh
 # create user
-CREATE USER username WITH PASSWORD 'pass1234';
+CREATE USER postgres WITH PASSWORD 'postgres';
 # create Database
-CREATE DATABASE appstore_backend; CREATE DATABASE appstore_backend_test;
-# grant all databases to the user
-GRANT ALL PRIVILEGES ON DATABASE appstore_backend TO username; GRANT ALL PRIVILEGES ON DATABASE appstore_backend_test TO username;
+CREATE DATABASE appstore_backend;
+# conecct to database
+\c appstore_backend;
 ```
 
 ### Database Migrations
@@ -103,7 +102,7 @@ GRANT ALL PRIVILEGES ON DATABASE appstore_backend TO username; GRANT ALL PRIVILE
 db-migrate create users--sql-file
 db-migrate create products --sql-file
 db-migrate create orders --sql-file
-db-migrate create orders_products --sql-file
+db-migrate create order_products --sql-file
 ```
 
 ### Environmental Variables (.env file contents)
@@ -125,5 +124,3 @@ BCRYPT_PASSWORD=your-secret-password
 SALT_ROUNDS=10
 TOKEN_SECRET=ahmed-secret-token
 ```
-  
-
