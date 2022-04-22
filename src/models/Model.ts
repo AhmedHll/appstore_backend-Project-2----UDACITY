@@ -100,11 +100,20 @@ class Model {
     }
   }
 
-  async addProduct(quantity: number, order_id: string, product_id: string): Promise<User> {
+  async addProduct(
+    quantity: number,
+    order_id: string,
+    product_id: string
+  ): Promise<User> {
     try {
-      const sql = `INSERT INTO ${this.table} (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *`;
+      const sql =
+        'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
       const connection = await db.connect();
-      const result = await connection.query(sql, [quantity, order_id, product_id,]);
+      const result = await connection.query(sql, [
+        quantity,
+        order_id,
+        product_id,
+      ]);
       const order = result.rows[0];
       connection.release();
       return order;

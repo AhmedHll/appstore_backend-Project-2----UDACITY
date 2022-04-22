@@ -13,6 +13,7 @@ const login: RequestHandler = async (req, res, next) => {
     const user = await User.getOne('email', email);
     // create token
     // compare password
+    if (!user) throw new Error('no user exist with this email');
     const isPassword = await User.comparePassword(
       password,
       user.password as string

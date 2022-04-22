@@ -11,7 +11,8 @@
     "lint": "eslint --config .eslintrc ./src/**/*.ts",
     "test": "npm run build && jasmine",
     "migrate-up": "db-migrate up",
-    "migrate-down": "db-migrate down"
+    "migrate-down": "db-migrate down",
+    "migrate-reset":"db-migrate reset"
   },
   "keywords": [],
   "author": "",

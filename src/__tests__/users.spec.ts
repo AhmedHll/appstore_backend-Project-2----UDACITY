@@ -43,15 +43,51 @@ describe('Testing User Methods', () => {
 
 //Testing Users Endpoints
 describe('Testing Users Endpoints.', () => {
-  it('GET /users by id', async () => {
-    const response = await request.get('/api/users/1');
+  it('[POST] /api/users To create account', async () => {
+    const newUser = {
+      firstName: 'firstTest',
+      lastName: 'lastName',
+      email: 'test@gmail.com',
+      password: 'test123',
+    };
+    const response = await request.post('/api/users').send(newUser);
     expect(response.status).toBe(200);
   });
 
-  it('GET /users with providing a token', async () => {
+  // it('[POST] /api/users/authentication`)
+
+  it('[PATCH] /api/users/1 To edit user account by id ', async () => {
+    const response = await request
+      .patch('/api/users/1')
+      .send(newUser)
+      .set('Cookie', [`token=${token}`]);
+    expect(response.status).toBe(200);
+  });
+
+  it('[DELETE] /api/users/1 To edit user account by id ', async () => {
+    const response = await request
+      .patch('/api/users/1')
+      .send(newUser)
+      .set('Cookie', [`token=${token}`]);
+    expect(response.status).toBe(200);
+  });
+
+  it('[GET] /api/users/1 to get user by id', async () => {
+    const response = await request
+      .get('/api/users/1')
+      .set('Cookie', [`token=${token}`]);
+    expect(response.status).toBe(200);
+  });
+
+  it('[GET] /api/users to get users with providing a token', async () => {
     const response = await request
       .get('/api/users')
-      .set('Authorization', `Bearer ${token}`);
+      .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
+  });
+
+  it('[GET] /api/users [token require]', async () => {
+    const response = await request.get('/api/users');
+    expect(response.status).toBe(401);
   });
 });

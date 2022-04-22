@@ -8,7 +8,7 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
     const hashedPassword = await User.hashPassword(req.body.password);
     req.body.password = hashedPassword;
     const user = await User.create(req.body);
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: { ...user },
       message: 'User Created Successfully',

@@ -79,16 +79,21 @@ const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
 
 const addProduct = async (req: Request, res: Response, next: NextFunction) => {
   const order_Id: string = req.params.id;
-  const product_Id: string = req.body.product_Id;
+  const product_id: string = req.body.product_id;
   const quantity: number = parseInt(req.body.quantity);
 
   try {
-    const addedProduct = await Order.addProduct(quantity, order_Id, product_Id);
+    const addedProduct = await Order.addProduct(quantity, order_Id, product_id);
     res.json(addedProduct);
   } catch (error) {
-    res.status(400);
-    res.json(error);
     next(error);
   }
 };
-export { createOrder, getOrders, getOrder, updateOrder, deleteOrder, addProduct};
+export {
+  createOrder,
+  getOrders,
+  getOrder,
+  updateOrder,
+  deleteOrder,
+  addProduct,
+};
