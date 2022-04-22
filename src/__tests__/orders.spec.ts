@@ -17,29 +17,6 @@ const token = jwt.sign(newOrder, process.env.TOKEN_SECRET as string, {
   expiresIn: '30d',
 });
 
-//Testing order Methods
-describe('Testing order Methods', () => {
-  it('A method that create order', () => {
-    expect(order.create).toBeDefined();
-  });
-
-  it('A method that get one order', () => {
-    expect(order.getOne).toBeDefined();
-  });
-
-  it('A method that get all orders', () => {
-    expect(order.getAll).toBeDefined();
-  });
-
-  it('A method that update order', () => {
-    expect(order.updateOne).toBeDefined();
-  });
-
-  it('A method that delete order', () => {
-    expect(order.deleteOne).toBeDefined();
-  });
-});
-
 //Testing orders Endpoints
 describe('Testing orders Endpoints.', () => {
   it('[POST] /api/orders To create order with providing a token', async () => {

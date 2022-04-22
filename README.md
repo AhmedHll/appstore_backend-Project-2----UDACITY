@@ -5,6 +5,7 @@ NODE_ENV=dev
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=appstore_backend
+POSTGRES_DB_TEST=appstore_backend_test
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 

@@ -17,29 +17,6 @@ const token = jwt.sign(newProduct, process.env.TOKEN_SECRET as string, {
   expiresIn: '30d',
 });
 
-//Testing Product Methods
-describe('Testing Product Methods', () => {
-  it('A method that create Product', () => {
-    expect(product.create).toBeDefined();
-  });
-
-  it('A method that get one product', () => {
-    expect(product.getOne).toBeDefined();
-  });
-
-  it('A method that get all products', () => {
-    expect(product.getAll).toBeDefined();
-  });
-
-  it('A method that update product', () => {
-    expect(product.updateOne).toBeDefined();
-  });
-
-  it('A method that delete product', () => {
-    expect(product.deleteOne).toBeDefined();
-  });
-});
-
 //Testing Products Endpoints
 describe('Testing products Endpoints.', () => {
   it('[POST] /api/products To create product with providing a token', async () => {
