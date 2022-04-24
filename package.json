@@ -9,7 +9,7 @@
     "start": "npm run build && node dist/server.js",
     "format": "prettier --config .prettierrc ./src/**/*.ts -w",
     "lint": "eslint --config .eslintrc ./src/**/*.ts",
-    "test": "npm run build && jasmine",
+    "test": "set NODE_ENV=test&& db-migrate -e test up && npm run build && jasmine && db-migrate -e test reset",
     "migrate-up": "db-migrate up",
     "migrate-down": "db-migrate down",
     "migrate-reset":"db-migrate reset"

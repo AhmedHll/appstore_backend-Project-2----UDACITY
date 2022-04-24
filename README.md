@@ -1,5 +1,5 @@
 PORT=2222
-NODE_ENV=dev
+NODE_ENV=test
 
 # database connection information
 POSTGRES_HOST=localhost
@@ -76,7 +76,7 @@ npm -i --save-dev @typescript-eslint/parser
     "nom run start": "to compar ts files and run dev mode",
     "nom run format": "to use prettier to format the code",
     "nom run lint": "to use eslint to analyzes the code to quickly find problems",
-    "nom run test": "to run test cases by jasmine",
+    "nom run test":"set NODE_ENV=test&& db-migrate -e test up && npm run build && jasmine && db-migrate -e test reset",
     "nom run migrate-up": "to create tables is database",
     "nom run migrate-down": "to drop tables on database"
 ```
