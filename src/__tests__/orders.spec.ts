@@ -3,14 +3,19 @@ import supertest from 'supertest';
 import app from '../server';
 import jwt from 'jsonwebtoken';
 import Order from '../types/order.type';
+import userModel from '../models/userModel';
+import User from '../types/user.type';
+import Product from '../types/product.type';
 
 const order = new Model('orders');
+const user1 = new userModel('users');
+const product1 = new Model('products');
 let createdOrder: Order;
 const request = supertest(app);
 
 const newOrder = {
   status: 'active || not active',
-  user_id: 5,
+  user_id: 1,
 };
 
 const token = jwt.sign(newOrder, process.env.TOKEN_SECRET as string, {
@@ -18,11 +23,27 @@ const token = jwt.sign(newOrder, process.env.TOKEN_SECRET as string, {
 });
 
 //Testing orders Endpoints
+let createdUser: User;
+let createdProduct: Product;
+
 describe('Testing orders Endpoints.', () => {
+  beforeAll(async () => {
+    createdUser = await user1.create({
+      firstName: 'firstTest',
+      lastName: 'lastTest',
+      email: 'test@gmail.com',
+      password: '123123',
+    });
+    createdProduct = await product1.create({
+      name: 'testProduct',
+      price: 123,
+      category: 'test',
+    });
+  });
   it('[POST] /api/orders - To create order with providing a token', async () => {
     const newOrder = {
       status: 'active',
-      user_id: 5,
+      user_id: createdUser.id,
     };
     const response = await request
       .post('/api/orders')
@@ -33,32 +54,37 @@ describe('Testing orders Endpoints.', () => {
   });
 
   it('[PATCH] /api/orders/:id - [token require] ', async () => {
-    const response = await request.patch('/api/orders/1').send(newOrder);
+    const response = await request
+      .patch(`/api/orders/${createdOrder.id}`)
+      .send(newOrder);
+
     expect(response.status).toBe(401);
   });
 
   it('[PATCH] /api/orders/:id - To edit order order by id with providing a token ', async () => {
     const response = await request
-      .patch('/api/orders/1')
+      .patch(`/api/orders/${createdOrder.id}`)
       .send(newOrder)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(401);
   });
 
   it('[PATCH] /api/orders/:id - [token require] ', async () => {
-    const response = await request.patch('/api/orders/1').send(newOrder);
+    const response = await request
+      .patch(`/api/orders/${createdOrder.id}`)
+      .send(newOrder);
     expect(response.status).toBe(401);
   });
 
   it('[GET] /api/orders/:id - to get order by id with providing a token', async () => {
     const response = await request
-      .get('/api/orders/1')
+      .get(`/api/orders/${createdOrder.id}`)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
   });
 
   it('[GET] /api/orders/:id - [token require]', async () => {
-    const response = await request.get('/api/orders/1');
+    const response = await request.get(`/api/orders/${createdOrder.id}`);
     expect(response.status).toBe(401);
   });
 
@@ -90,14 +116,28 @@ describe('Testing orders Endpoints.', () => {
   });
 });
 
+let createdOrderProduct: Order;
 describe('Testing orders-products - Endpoints.', () => {
+  it('[POST] /api/orders - To create order with providing a token', async () => {
+    const newOrder = {
+      status: 'active',
+      user_id: createdUser.id,
+    };
+    const response = await request
+      .post('/api/orders')
+      .send(newOrder)
+      .set('Cookie', [`token=${token}`]);
+    createdOrderProduct = response.body.data;
+    expect(response.status).toBe(201);
+  });
+
   it('[POST] /api/orders/:id/products - with providing a token ', async () => {
     const data = {
-      product_id: '1',
+      product_id: createdProduct.id,
       quantity: '10',
     };
     const response = await request
-      .post('/api/orders/1/products')
+      .post(`/api/orders/${createdOrderProduct.id}/products`)
       .send(data)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
@@ -105,10 +145,12 @@ describe('Testing orders-products - Endpoints.', () => {
 
   it('[POST] /api/orders/:id/products - [token require] ', async () => {
     const data = {
-      product_id: '1',
+      product_id: createdProduct.id,
       quantity: '10',
     };
-    const response = await request.post('/api/orders/1/products').send(data);
+    const response = await request
+      .post(`/api/orders/${createdOrderProduct.id}/products`)
+      .send(data);
     expect(response.status).toBe(401);
   });
 });

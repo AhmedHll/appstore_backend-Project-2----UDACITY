@@ -1,11 +1,10 @@
-PORT=2222
-NODE_ENV=test
+PORT=3600
 
 # database connection information
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
 POSTGRES_DB=appstore_backend
-POSTGRES_DB_TEST=appstore_backend_test
+POSTGRES_DB_TEST=store_backend_test
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 
@@ -71,14 +70,14 @@ npm -i --save-dev @typescript-eslint/parser
 
 ## Scripts Used
 ```sh
-    "nom run dev": "to start dev mode with nodemon on port 3600",
-    "nom run build": "to compar ts fils to js fils on dis root",
-    "nom run start": "to compar ts files and run dev mode",
-    "nom run format": "to use prettier to format the code",
-    "nom run lint": "to use eslint to analyzes the code to quickly find problems",
-    "nom run test":"set NODE_ENV=test&& db-migrate -e test up && npm run build && jasmine && db-migrate -e test reset",
-    "nom run migrate-up": "to create tables is database",
-    "nom run migrate-down": "to drop tables on database"
+    "npm run dev": "to set NODE_ENV=dev and start dev mode with nodemon on port 3600",
+    "npm run build": "to compar ts fils to js fils on dis root",
+    "npm run start": "to compar ts files and run dev mode",
+    "npm run format": "to use prettier to format the code",
+    "npm run lint": "to use eslint to analyzes the code to quickly find problems",
+    "npm run test":"set NODE_ENV=test&& db-migrate -e test up && npm run build && jasmine && db-migrate -e test reset",
+    "npm run migrate-up": "to set NODE_ENV=dev&& create tables is database",
+    "npm run migrate-down": "to set NODE_ENV=dev&& drop tables on database"
 ```
 
 
@@ -92,7 +91,7 @@ In this repo there is a `REQUIREMENTS.md` document which outlines what this API 
 # create user
 CREATE USER postgres WITH PASSWORD 'postgres';
 # create Database
-CREATE DATABASE appstore_backend;
+CREATE DATABASE store_backend; CREATE DATABASE store_backend_test;
 # conecct to database
 \c appstore_backend;
 ```
@@ -121,8 +120,8 @@ NODE_ENV=dev
 # database connection information
 POSTGRES_HOST=localhost
 POSTGRES_PORT=5432
-POSTGRES_DB=appstore_backend
-POSTGRES_DB_TEST=appstore_backend_test
+POSTGRES_DB=store_backend
+POSTGRES_DB_TEST=store_backend_test
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 

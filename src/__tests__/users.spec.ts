@@ -35,26 +35,28 @@ describe('Testing Users Endpoints.', () => {
 
   it('[PATCH] /api/users/:id - To edit user account by id with providing a token ', async () => {
     const response = await request
-      .patch('/api/users/1')
+      .patch(`/api/users/${createdUser.id}`)
       .send(newUser)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
   });
 
   it('[PATCH] /api/users/:id - [token require] ', async () => {
-    const response = await request.patch('/api/users/1').send(newUser);
+    const response = await request
+      .patch(`/api/users/${createdUser.id}`)
+      .send(newUser);
     expect(response.status).toBe(401);
   });
 
   it('[GET] /api/users/:id - to get user by id with providing a token', async () => {
     const response = await request
-      .get('/api/users/1')
+      .get(`/api/users/${createdUser.id}`)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
   });
 
   it('[GET] /api/users/:id - [token require]', async () => {
-    const response = await request.get('/api/users/1');
+    const response = await request.get(`/api/users/${createdUser.id}`);
     expect(response.status).toBe(401);
   });
 

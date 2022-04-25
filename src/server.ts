@@ -8,11 +8,6 @@ const app: Application = express();
 
 const port = process.env.PORT || 3000;
 
-// const corsOption = {
-//   origin: 'http://someotherdomissn.com',
-//   optionSuccessStatus: 200,
-// };
-
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());

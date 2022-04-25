@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./src/server.ts",
+    "dev": "set NODE_ENV=dev&& nodemon ./src/server.ts",
     "build": "tsc",
     "start": "npm run build && node dist/server.js",
     "format": "prettier --config .prettierrc ./src/**/*.ts -w",
     "lint": "eslint --config .eslintrc ./src/**/*.ts",
     "test": "set NODE_ENV=test&& db-migrate -e test up && npm run build && jasmine && db-migrate -e test reset",
-    "migrate-up": "db-migrate up",
-    "migrate-down": "db-migrate down",
+    "migrate-up": "set NODE_ENV=dev&& db-migrate up",
+    "migrate-down": "set NODE_ENV=dev&& db-migrate down",
     "migrate-reset":"db-migrate reset"
   },
   "keywords": [],

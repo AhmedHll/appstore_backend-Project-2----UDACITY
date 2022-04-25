@@ -3,7 +3,12 @@ import Order from '../../types/order.type';
 import User from '../../types/user.type';
 import Product from '../../types/product.type';
 
-describe('Test every Method of Model', () => {
+let createdUser: User;
+let createProduct: Product;
+const product = new Model('products');
+const Orders = new Model('orders');
+
+describe('Test User Model Methods', () => {
   const userTest = new Model('users');
   it('Test Create Method', async () => {
     const result = await userTest.create({
@@ -12,21 +17,22 @@ describe('Test every Method of Model', () => {
       lastName: 'lastTest',
       password: '123456',
     });
+    createdUser = result;
     expect(result).toBeInstanceOf(Object);
   });
 
-  it('Test getAll Method', async () => {
+  it('Test getOne User Method', async () => {
+    const result = await userTest.getOne('id', createdUser.id);
+    expect(result).toBeInstanceOf(Object);
+  });
+
+  it('Test getAll Users Method', async () => {
     const result = await userTest.getAll();
     expect(result).toBeInstanceOf(Array);
   });
 
-  it('Test getOne Method', async () => {
-    const result = await userTest.getOne('id', 1);
-    expect(result).toBeInstanceOf(Object);
-  });
-
-  it('Test updateOne Method', async () => {
-    const result = await userTest.updateOne('id', {
+  it('Test updateOne User Method', async () => {
+    const result = await userTest.updateOne('' + createdUser.id, {
       email: 'test@gmail.com',
       firstName: 'firstTest',
       lastName: 'lastTest',
@@ -36,12 +42,9 @@ describe('Test every Method of Model', () => {
   });
 
   it('Test deleteOne Method', async () => {
-    const result = await userTest.deleteOne('10'); //make sure the id of user you want to test is exist and don't link with foreign key.
-    expect(result).toBeInstanceOf(Object);
-  });
-
-  it('Test addProduct Method', async () => {
-    const result = await userTest.addProduct(1, '1', '1');
+    const result = await userTest.deleteOne(
+      createdUser.id as unknown as string
+    );
     expect(result).toBeInstanceOf(Object);
   });
 });

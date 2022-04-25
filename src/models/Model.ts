@@ -5,7 +5,7 @@ class Model {
   constructor(public table: string) {}
 
   // create
-  async create(user: User): Promise<User> {
+  async create(user: any): Promise<any> {
     try {
       // open connection with DB
       const connection = await db.connect();
@@ -22,12 +22,14 @@ class Model {
       // return created
       return result.rows[0];
     } catch (error) {
+      console.log(error);
+
       throw new Error(`Unable to create ${this.table.slice(0, -1)}`);
     }
   }
 
   // get all
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<any[]> {
     try {
       const connection = await db.connect();
       const sql = `SELECT * FROM ${this.table}`;
@@ -42,7 +44,7 @@ class Model {
   }
 
   // get one
-  async getOne(id: string, value: any): Promise<User> {
+  async getOne(id: string, value: any): Promise<any> {
     try {
       const connection = await db.connect();
       const sql = `SELECT * FROM ${this.table} WHERE ${id}=($1)`;
@@ -59,7 +61,7 @@ class Model {
   }
 
   // update one
-  async updateOne(id: string, u: User): Promise<User> {
+  async updateOne(id: string, u: any): Promise<any> {
     try {
       const connection = await db.connect();
       const sql = `
@@ -83,7 +85,7 @@ class Model {
   }
 
   // delete one
-  async deleteOne(id: string): Promise<User> {
+  async deleteOne(id: string): Promise<any> {
     try {
       const connection = await db.connect();
       const sql = `DELETE FROM ${this.table}
@@ -93,6 +95,8 @@ class Model {
       connection.release();
       return result.rows[0];
     } catch (error) {
+      console.log(error);
+
       throw new Error(`Unable to delete ${this.table.slice(0, -1)}: ${id}, ${
         (error as Error).message
       };
@@ -104,7 +108,7 @@ class Model {
     quantity: number,
     order_id: string,
     product_id: string
-  ): Promise<User> {
+  ): Promise<any> {
     try {
       const sql =
         'INSERT INTO order_products (quantity, order_id, product_id) VALUES($1, $2, $3) RETURNING *';
@@ -118,6 +122,7 @@ class Model {
       connection.release();
       return order;
     } catch (err) {
+      console.log(err);
       throw new Error(
         `Could not add product ${product_id} to order ${order_id}: ${err}`
       );

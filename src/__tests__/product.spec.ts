@@ -41,19 +41,21 @@ describe('Testing products Endpoints.', () => {
 
   it('[PATCH] /api/products/:id - To edit Product by id with providing a token', async () => {
     const response = await request
-      .patch('/api/products/1')
+      .patch(`/api/products/${createdProduct.id}`)
       .send(newProduct)
       .set('Cookie', [`token=${token}`]);
     expect(response.status).toBe(200);
   });
 
   it('[PATCH] /api/products/:id - [token require] ', async () => {
-    const response = await request.patch('/api/products/1').send(newProduct);
+    const response = await request
+      .patch(`/api/products/${createdProduct.id}`)
+      .send(newProduct);
     expect(response.status).toBe(401);
   });
 
   it('[GET] /api/products/:id - to get product by id', async () => {
-    const response = await request.get('/api/products/1');
+    const response = await request.get(`/api/products/${createdProduct.id}`);
     expect(response.status).toBe(200);
   });
 

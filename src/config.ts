@@ -4,7 +4,6 @@ dotenv.config();
 
 const {
   PORT,
-  NODE_ENV,
   POSTGRES_HOST,
   POSTGRES_PORT,
   POSTGRES_DB,
@@ -20,7 +19,7 @@ export default {
   port: PORT,
   host: POSTGRES_HOST,
   dbPort: POSTGRES_PORT,
-  database: NODE_ENV === 'test' ? POSTGRES_DB : POSTGRES_DB_TEST,
+  database: process.env.NODE_ENV === 'test' ? POSTGRES_DB_TEST : POSTGRES_DB,
   user: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   pepper: BCRYPT_PASSWORD,
